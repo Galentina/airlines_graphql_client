@@ -1,0 +1,89 @@
+.flight_block{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.flights_section{
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+}
+
+.table-box {
+  box-sizing: border-box;
+  border: 1px solid #b2b2b2;
+  border-collapse: collapse;
+}
+
+.table-head {
+  color: #343471;
+  padding: 10px 15px;
+  border-bottom: 1px solid #b2b2b2;
+  font-size: 18px;
+}
+
+.table-body {
+  padding: 5px 10px;
+  color: #797979;
+}
+
+th:not(:first-child){
+  border-left: 1px solid #b2b2b2;
+}
+
+.button_select {
+  margin: 2px 0;
+  height: 30px;
+  border: 1px solid #34714c;
+  color: #34714c;
+  border-radius: 5px;
+}
+.button_select:hover{
+  border: 1px solid #34714c;
+  background-color: #34714c;
+  color: white;
+  border-radius: 5px;
+}
+
+.button_flight{
+  height: 40px;
+  text-align: center;
+  border: 1px solid #343471;
+  background-color: #e3f2fd;
+  color: #343471;
+  cursor: pointer;
+  margin: 0 10px 15px;
+}
+
+.button_flight:hover{
+  background-color: #343471;
+  color: white;
+}
+
+.pagination{
+  display: flex;
+  flex-direction: row;
+  margin: 15px auto;
+}
+
+.page-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #343471;
+  border-radius: 3px;
+  background-color: #e3f2fd;
+  color: #343471;
+  cursor: pointer;
+  margin: 3px;
+  list-style-type: none;
+}
+
+.page-item:hover {
+  border: 1px solid #343471;
+  background-color: #343471;
+  color: white;
+}
