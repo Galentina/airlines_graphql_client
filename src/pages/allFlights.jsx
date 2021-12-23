@@ -1,5 +1,5 @@
 import { useEffect, useState} from 'react';
-import { useQuery, gql, useLazyQuery } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import '../theme'
 import { FlightsTable, MainHeader } from '../components';
 import { compStore } from '../init/compStore';
