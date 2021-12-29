@@ -19,7 +19,7 @@ export const Form = () => {
         console.log(values);
         reset();
     }
-    const modalReg = () => setToggleReg(!toggleReg);
+    const modalReg = (x) => setToggleReg(x);
 
     useEffect(() => {
         setFocus('email');
@@ -51,7 +51,7 @@ export const Form = () => {
                         { formState.errors.password ? formState.errors.password.message : 'Enter password' }</span>
                 </label>
                 <button type='submit' className="sub_button">Login</button>
-                <button type='button' className="sub_button" onClick={() => setToggleReg(!toggleReg)}>Register</button>
+                <button type='button' className="sub_button" onClick={() => modalReg(true)}>Register</button>
             </form>
             <ModalReg modalReg = { modalReg } toggleReg={ toggleReg }/>
         </div>

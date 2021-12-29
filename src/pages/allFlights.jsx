@@ -5,20 +5,7 @@ import { FlightsTable, MainHeader } from '../components';
 import { compStore } from '../init/compStore';
 import { Paginate } from '../components/Paginate';
 import { Modal } from "../components/Modal";
-
-
-const QUERY_ALL_FLIGHTS = gql`
-    query GetAllFlights {
-        flights{
-            id
-            date
-            time
-            name
-            direct
-        }
-}
-`;
-
+import { QUERY_ALL_FLIGHTS } from '../helpers/gqlRequest';
 
 
 export const AllFlights = () => {
@@ -27,7 +14,7 @@ export const AllFlights = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [flightsPerPage, setFlightsPerPage] = useState(15);
     const [flights, setFlights] = useState([]);
-    const [toggle, setToggle] = useState(false);
+    const [toggleFlights, setToggleFlights] = useState(false);
 
     const { data: flightsData, loading: loadingFlights, error: errorFlights } = useQuery(QUERY_ALL_FLIGHTS);
     const uploadAllFlights = () => setFlights(flightsData?.flights)
@@ -45,12 +32,14 @@ export const AllFlights = () => {
     const currentFlights = allFlights.slice(indexFirstFlight, indexLastFlight)
     const pageCounter = (num) => setCurrentPage(num)
 
-    const modal = () => setToggle(!toggle);
+    const modalSearchFlights = (x) => setToggleFlights(x);
     const updateFlightList = (data) => setFlights(data);
+
 
     return (
         <div className='flight_block _container'>
-            { toggle && <Modal modal={ modal } updateFlightList={ updateFlightList }/> }
+            <Modal modal={ modalSearchFlights } updateFlightList={ updateFlightList }
+                   page={setCurrentPage} toggleFlights={ toggleFlights }/>
             <section className='flights_section'>
                 <div className='div-menu'>
                     <MainHeader title={comp.head}/>
@@ -58,7 +47,9 @@ export const AllFlights = () => {
                 <div>
                     <button className="button_flight" type="button"
                             onClick={ () => { pageCounter(1); uploadAllFlights() } }>All items</button>
-                    <button className="button_flight" type="button" onClick={ ()=> modal() }>Search for flight</button>
+                    <button className="button_flight" type="button"
+                            onClick={ ()=> modalSearchFlights(true) }>
+                        Search for flight</button>
                     <button className="button_flight" type="button" >Selected flights</button>
                 </div>
                 <table className="table-box">

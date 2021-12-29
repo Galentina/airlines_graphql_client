@@ -3,26 +3,16 @@ import { useForm } from 'react-hook-form';
 import { useQuery, gql, useLazyQuery, useMutation } from '@apollo/client';
 import { MainHeader } from './MainHeader';
 import { Nationality } from '../helpers/Nationality';
-import {yupResolver} from "@hookform/resolvers/yup";
-import {schemaReg} from "../helpers/schemaReg";
-
-
-
-const CREATE_USER_MUTATION = gql`
-    mutation CreateUser($input: CreateUserInput!) {
-      createUser(input: $input) {
-        name
-        username
-        age
-        nationality
-      }
-    }
-`;
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaReg } from "../helpers/schemaReg";
+import { CREATE_USER_MUTATION, QUERY_ALL_FLIGHTS, QUERY_ALL_USERS } from '../helpers/gqlRequest';
+import {useEffect, useRef} from "react";
+import {useClickOutside} from "../helpers/useClickOutside";
 
 
 export const ModalReg = (props) => {
-
     const { modalReg, toggleReg } = props;
+    const { data: usersData, loading: loadingUsers, refetch } = useQuery(QUERY_ALL_USERS);
     const [createUser] = useMutation(CREATE_USER_MUTATION);
     const { register, reset, handleSubmit, formState } = useForm({
         mode: 'onTouched',
@@ -55,13 +45,26 @@ export const ModalReg = (props) => {
         reset();
     };
 
+    let domNodeReg = useClickOutside(() => {
+        modalReg(false);
+    });
+
+    // useEffect(() => {
+    //     let handler = (event)=> {
+    //         if (!modalRegRef.current.contains(event.target)) modalReg(false);
+    //     }
+    //     document.addEventListener('mousedown', handler);
+    //     return () => { document.removeEventListener('mousedown', handler)}
+    // });
+
+
     const NationalityList = ['', ...Nationality];
 
     return (
-        <div className={ toggleReg ? 'modalReg-box open' : 'modalReg-box'}>
+        <div className={ toggleReg ? 'modalReg-box open' : 'modalReg-box'} ref={domNodeReg}>
             <div className='modal-contentReg'>
                 <div>
-                    <MainHeader title={'Select flights'}/>
+                    <MainHeader title={'Registration'}/>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className='modal-form'>
                     <label className='modal-label'><span>Name</span>
@@ -134,7 +137,7 @@ export const ModalReg = (props) => {
                     <div>
 
                         <button type='submit' className="sub_button">Submit</button>
-                        <button type='button' className="sub_button" onClick={() => modalReg(!toggleReg)}>Close</button>
+                        <button type='button' className="sub_button" onClick={() => modalReg(false)}>Close</button>
                     </div>
                 </form>
             </div>

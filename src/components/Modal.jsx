@@ -2,6 +2,7 @@ import '../theme';
 import { useForm } from 'react-hook-form';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import { MainHeader } from './MainHeader';
+import {useClickOutside} from "../helpers/useClickOutside";
 
 
 const GET_FLIGHTS_BY_DATA = gql`
@@ -18,7 +19,7 @@ const GET_FLIGHTS_BY_DATA = gql`
 
 
 export const Modal = (props) => {
-    const { modal, updateFlightList } = props;
+    const { modal, updateFlightList, page, toggleFlights } = props;
     const [fetchFlight, {data: flightsSearchData, error: errorFlightsData}] = useLazyQuery(GET_FLIGHTS_BY_DATA);
     const { register, reset, handleSubmit } = useForm();
 
@@ -30,20 +31,23 @@ export const Modal = (props) => {
                     name: String(value.airName),
                 },
             }).then(res => {
-                console.log('!!!', res.data.flightsByName)
                 updateFlightList(res.data.flightsByName)
             });
             reset();
         }
+        page(1);
     };
 
+    let domNodeFlights = useClickOutside(() => {
+        modal(false);
+    });
+
     return (
-        <div className='modal-box'>
+        <div className={ toggleFlights ? 'modal-box open-search' : 'modal-box'} ref={domNodeFlights}>
             <div className='modal-content'>
-                <div>
-                    <MainHeader title={'Select flights'}/>
-                </div>
-                <form onSubmit={handleSubmit(onSubmit)} className='modal-form'>
+                <MainHeader title={'Select flights'}/>
+                <form onSubmit={handleSubmit(onSubmit)}
+                      className='modal-form'>
                     {/*<label className='modal-label'>Choose Date</label>*/}
                     {/*<input type="date" min="2022-01-01" max="2023-01-01"*/}
                     {/*       name='date'*/}
